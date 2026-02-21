@@ -3,30 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Age Calculator</title>
     <link rel="stylesheet" href="style.css">
-    <title>Tic Tac Toe Game</title>
 </head>
 <body>
-    <main>
 
-        <h1>Tic Tac Toe</h1>
-        <div class="container">
-        <div class="game">
-             <button class="box"></button>
-             <button class="box"></button>
-             <button class="box"></button>
-             <button class="box"></button>
-             <button class="box"></button>
-             <button class="box"></button>
-             <button class="box"></button>
-             <button class="box"></button>
-             <button class="box"></button>
-        </div>
-        </div>
-        <button id="reset-btn">Reset Game</button>
-    
+<div class="card">
+    <h1>Age & Generation Insight Tool</h1>
 
-    </main>
-    
+    <input type="date" id="dob">
+    <button onclick="calculateAge()">Calculate</button>
+    <button class="reset" onclick="resetAll()">Reset</button>
+
+    <div class="error" id="error"></div>
+    <div class="result" id="result"></div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>

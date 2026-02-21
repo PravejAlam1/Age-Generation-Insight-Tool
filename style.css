@@ -1,42 +1,59 @@
-*{
-    margin: 0;
-    padding: 0;
-
-}
-body {
-    background-color: gray;
-    text-align: center;
-}
-
-.container{
-    height: 70vh;
-     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#0f172a;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#fff;
 }
 
-.game{
-    height: 60vmin;
-    width: 60vmin;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5vmin;
+.card{
+    width:370px;
+    background:#020617;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 0 30px rgba(0,0,0,.6);
 }
 
-.box {
-    height: 18vmin;
-    width: 18vmin;
-    border-radius: 1rem;
-    border: none;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
-    font-size: 8vmin;
-    color: red;
+h1{
+    text-align:center;
+    color:#facc15;
+    margin-bottom:20px;
 }
 
-#reset-btn {
-    padding: 1rem;
-    font-size: 1.25rem;
+input, button{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    border:none;
+    border-radius:6px;
+    margin-top:10px;
+}
+
+button{
+    background:#facc15;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button.reset{
+    background:#334155;
+    color:#fff;
+}
+
+.error{
+    color:#f87171;
+    margin-top:10px;
+}
+
+.result{
+    margin-top:20px;
+    line-height:1.6;
+}
+
+span{
+    color:#facc15;
+    font-weight:bold;
 }

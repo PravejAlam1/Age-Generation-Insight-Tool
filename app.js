@@ -1,92 +1,90 @@
-let boxes = document.querySelectorAll(".box");
-let resetBtn = document.querySelectorAll("#reset-btn");
+const dobInput = document.getElementById("dob");
+const result = document.getElementById("result");
+const error = document.getElementById("error");
 
-let tern0 = true; //playerx, player0
+// block future date
+dobInput.max = new Date().toISOString().split("T")[0];
 
-const winPatterns = {
-    [0, 1, 2],
-    [0, 3, 6],
-    [0, 4, 8],
-    [1, 4, 7],
-    [2, 5, 8],
-    [2, 4, 6],
-    [3, 4, 5],
-    [6, 7, 8],
+function getGeneration(year){
+    if(year >= 1928 && year <= 1945) return "Silent Generation";
+    if(year >= 1946 && year <= 1964) return "Baby Boomer";
+    if(year >= 1965 && year <= 1980) return "Generation X (Gen X)";
+    if(year >= 1981 && year <= 1996) return "Millennial (Gen Y)";
+    if(year >= 1997 && year <= 2012) return "Generation Z (Gen Z)";
+    if(year >= 2013) return "Generation Alpha";
+    return "Unknown";
+}
 
-};
+function calculateAge(){
+    result.innerHTML = "";
+    error.innerHTML = "";
 
-const resetGame = () => {
-    turn0 = true;
-    count = 0;
-    enableBoxes();
-    msgContainer.classList.add("hode");
-
-};
-
-boxes.forEach((box) => {
-    box.addEventListener("click", ()=> {
-        if (turn0){
-            //player0
-            box.innerText = "0";
-            turn0 = false;
-
-        } else {
-            //playerX
-            box.innerText = "X";
-            turn0 = true;
-
-        }
-        box.disable = true;
-        cout++;
-
-        let isWinner = checkWinner();
-        if (count ===9 && ! isWinner){
-            gameDraw();
-
-        }
-    });
-});
-
-const gameDraw = () => {
-    msg.innerText = 'Game was a Draw. ';
-    msgContainer.classList.remove("hide");
-    disableBoxes();
-
-};
-
-const disableBoxes = () => {
-    for (let box of boxes) {
-        box.disabled = true;
-
+    if(!dobInput.value){
+        error.innerHTML = "Please select Date of Birth";
+        return;
     }
-};
 
-const enableBoxes = () => {
-    for (let box of boxes) {
-        box.disabled = false;
-        box.innerText = "";
+    const dob = new Date(dobInput.value);
+    const today = new Date();
 
+    if(dob > today){
+        error.innerHTML = "Future date not allowed";
+        return;
     }
-};
-const showWinner = (winner) => {
-    msg.innerText = 'Congratulation,Winner is ${winner}';
-    msgContainer.classList.remove("hide");
-    disableBoxes();
-};
 
-const checkWinner = () => {
-    for (let pattern of winPatterns){
-        let pos1Val = boxes[pattern[0]].innerText;
-        let pos2Val = boxes[pattern[1]].innerText;
-        let pos3Val = boxes[pattern[2]].innerText;
+    let years = today.getFullYear() - dob.getFullYear();
+    let months = today.getMonth() - dob.getMonth();
+    let days = today.getDate() - dob.getDate();
 
-        if(pos1Val !="" && pos2Val != && pos3Val != ""){
-            if(pos1Val === pos2Val && pos2Val === pos3Val){
-                showWinner(pos1Val);
-                return true;
-            }
-        }
+    if(days < 0){
+        months--;
+        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
     }
-};
-newGameBtn.addEventListener("click", resetGame);
-resetBtn.addEventListener("click", resetGame);
+
+    if(months < 0){
+        years--;
+        months += 12;
+    }
+
+    const totalDays = Math.floor(
+        (today - dob) / (1000 * 60 * 60 * 24)
+    );
+
+    let nextBirthday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
+    if(nextBirthday < today){
+        nextBirthday.setFullYear(today.getFullYear() + 1);
+    }
+
+    const diff = nextBirthday - today;
+    const bdDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const bdMonths = Math.floor(bdDays / 30);
+    const bdRemainingDays = bdDays % 30;
+
+    let category = "Adult";
+    if(years < 13) category = "Child";
+    else if(years < 20) category = "Teen";
+    else if(years >= 60) category = "Senior Citizen";
+
+    const generation = getGeneration(dob.getFullYear());
+
+    result.innerHTML = `
+        <p>You are <span>${years}</span> years 
+        <span>${months}</span> months 
+        <span>${days}</span> days old</p>
+
+        <p>Total days lived: <span>${totalDays}</span></p>
+
+        <p>Next birthday in 
+        <span>${bdMonths}</span> months 
+        <span>${bdRemainingDays}</span> days 🎂</p>
+
+        <p>Age Category: <span>${category}</span></p>
+        <p>Generation: <span>${generation}</span></p>
+    `;
+}
+
+function resetAll(){
+    dobInput.value = "";
+    result.innerHTML = "";
+    error.innerHTML = "";
+}
